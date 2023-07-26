@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Visii: Visual Instruction Inversion: Image Editing via Image Prompting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/assets/css/Highlight-Clean.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://em-content.zobj.net/source/animated-noto-color-emoji/356/eyes_1f440.gif">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://em-content.zobj.net/source/animated-noto-color-emoji/356/eyes_1f440.gif">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://em-content.zobj.net/source/animated-noto-color-emoji/356/eyes_1f440.gif">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta property="og:site_name" content="Visual Instruction Inversion: Image Editing via Image Prompting" />
+    <!-- <meta property="og:type" content="video.other" /> -->
+    <meta property="og:title" content="Visual Instruction Inversion: Image Editing via Image Prompting" />
+    <meta property="og:description" content="A framework for inverting visual prompts* into *editing instructions for text-to-image diffusion models." />
+    <meta property="og:url" content="https://thaoshibe.github.io/visii" />
+    <meta property="og:image" content="./assets/images/preview.png" />
+
+    <meta name="twitter:title" content="Visual Instruction Inversion: Image Editing via Image Prompting" />
+    <meta name="twitter:description" content="A framework for inverting visual prompts into editing instructions for text-to-image diffusion models." />
+    <meta name="twitter:url" content="https://thaoshibe.github.io/visii" />
+    <meta name="twitter:image" content="./assets/images/preview.png" />
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RK8Z1K8X2K');
+    </script>
+    <!-- <meta name="twitter:site" content="" /> -->
+    <style type="text/css">
+    .btn {
+    color:black;
+    text-decoration:none;
+}
+.btn:hover {
+    color: black;
+    text-decoration:none;
+}
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 768px;
+  position: relative;
+  margin: auto;
+}
+.citation {
+  background-color: #f1f1f1; /* Replace with your desired color */
+  border: 1px solid #DCDCDC;
+  padding-left: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 8px;
+}
+/* Hide the images by default */
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: 0px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+/*  transition: 0.6s ease;*/
+  border-radius: 0 3px 3px 0;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0);
+}
+
+/* Caption text */
+/*.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}*/
+
+/* Number text (1/3 etc) */
+/*.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}*/
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 9px;
+  width: 9px;
+  margin: 0 2px;
+  background-color: #bbb;
+  color:gray;
+  display: inline-block;
+/*  transition: background-color 0.6s ease;*/
+}
+
+.active, .dot:hover {
+  background-color: #FFFFCC;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+table.demo1 {
+    width:900;
+    text-align:center;
+    margin-left:auto;
+    margin-right: auto;
+}
+td.prompt {
+    width:100%;
+    text-align:center;
+    font-family: times, serif;
+    font-size:110%;
+}
+td.prompt a {
+    color: #B0B0B0;
+    text-decoration:none;
+}
+td.prompt a:hover, td.prompt a.active {
+    color:black;
+    text-decoration:none;
+}
+.img-stack {
+    position:relative;
+    display: block;
+    width:256px;
+    height:256px;
+}
+.img-stack img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
+.img-stack img.active {
+    z-index: 0;
+}
+.img-stack .overlay {
+    width: 256px;
+    height: 256px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: white;
+}
+
+.carousel > table {
+    position:absolute;
+    top: 0px;
+    transition: left 0.2s;
+    width:1000px;
+}
+.carousel_table td {
+    text-align:center;
+}
+.carousel_table td:nth-child(4) {
+    font-size:200%;
+}
+pre {
+    background-color:#eee;
+    border: 1px solid #999;
+    border-radius: 5px;
+    padding: 10px;
+    white-space: break-spaces;
+    width:80%;
+    text-align:left;
+}
+.dl_link {
+    display: inline-block;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.dl_link, .dl_link td {
+    color: black;
+    text-decoration: none;
+    font-size: 120%;
+}
+.dl_link, .dl_link table {
+    border-radius: 5px;
+    background-color: none;
+}
+.dl_link:hover, .dl_link:hover * {
+    color: #404040 !important;
+    background-color: #d9d9d9 !important;
+}
+@media only screen and (max-width: 768px) {
+    .content { width:100% !important; }
+}
+<style type="text/css">
+.btn {
+    color:black;
+    text-decoration:none;
+}
+.btn:hover {
+    color:gray;
+    text-decoration:none;
+}
+table.demo1 {
+    width:90%;
+    text-align:center;
+}
+/*.demo1 img {
+    width:256px;
+}*/
+td.prompt {
+    width:100%;
+    text-align:center;
+    font-family: fantasy;
+    font-size:100%;
+};
+td.prompt a {
+    color:#ddd;
+    text-decoration:none;
+}
+td.prompt a:hover, td.prompt a.active {
+    color:black;
+    text-decoration:none;
+}
+.img-stack {
+    position:relative;
+    display: block;
+/*    width:256px;
+    height:256px;*/
+}
+.img-stack img {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 0;
+}
+.img-stack img.active {
+    z-index: 1;
+}
+.img-stack .overlay {
+    width: 256px;
+    height: 256px;
+    opacity: 0;
+    transition: opacity .2s;
+    z-index: 2;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: white;
+}
+/*.carousel {
+    position:relative;
+    width:650px;
+    height:385px;
+    overflow:hidden;
+}*/
+/*.carousel > table {
+    position:absolute;
+    top: 0px;
+    transition: left 0.2s;
+    width:256px;
+}*/
+/*.carousel_table td {
+    text-align:center;
+}*/
+/*.carousel_table td:nth-child(5) {
+    font-size:150%;
+}*/
+.citation-container {
+  position: relative;
+}
+
+.copy-button {
+  position: absolute;
+  top: 55px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+/*  font-size: 12px;*/
+/*  color: black; /* Adjust the color as needed */*/
+}
+
+/*.copy-icon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #333;
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}*/
+
+pre {
+    background-color:#eee;
+    border: 1px solid #999;
+    border-radius: 5px;
+    padding: 10px;
+    white-space: break-spaces;
+    width:80%;
+    text-align:left;
+}
+td.gif {
+    width: 33%;
+    font-family: monospace;
+    font-size: 120%;
+}
+.dl_link {
+    display: inline-block;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.dl_link, .dl_link td {
+    color: black;
+    text-decoration: none;
+    font-size: 120%;
+}
+.dl_link, .dl_link table {
+    border-radius: 5px;
+    background-color: none;
+}
+.dl_link:hover, .dl_link:hover * {
+    color: #404040 !important;
+    background-color: #d9d9d9 !important;
+}
+
+@media only screen and (max-width: 930px) {
+    .content { width:100% !important; }
+}
+</style>
+<script type="text/javascript">
+  var curr_idx = 0;
+  var num_tables = 5;
+  function move(direction) {
+      if (curr_idx == 0 && direction < 0) {
+      move(num_tables - 1);
+      return;
+      }
+      if (curr_idx == num_tables - 1 && direction > 0) {
+      move(-1 * (num_tables - 1));
+      return;
+      }
+      tables = document.getElementsByClassName("carousel_table");
+      for(var i = 0; i < tables.length; i++) {
+      tables[i].style.left = (parseInt(tables[i].style.left.substring(0, tables[i].style.left.length - 2)) - direction * 650).toString() + "px";
+      }
+      curr_idx += direction;
+  }
+  function hideOverlay(classname) {
+      document.getElementById(classname + "_overlay").style.opacity = "0";
+  }
+  function activate_img(classname, idx, max) {
+      document.getElementById(classname + "_overlay").style.opacity = "1";
+      setTimeout(function() {
+      for(var i = 1; i <= max; i++) {
+          document.getElementById(classname + "_" + i.toString()).className = "";
+          document.getElementById(classname + "_text_" + i.toString()).className = "";
+      }
+      document.getElementById(classname + "_" + idx.toString()).className = "active";
+      document.getElementById(classname + "_text_" + idx.toString()).className = "active";
+      setTimeout(hideOverlay, 200, classname);
+      }, 200);
+  }
+
+  let img_id = 1;
+  let interval_id;
+  function activate(classname,idx,max){
+    activate_img(classname, idx, max);
+    clearInterval(interval_id);
+  }
+
+  if (!interval_id){
+    interval_id = setInterval(()=>{
+        img_id = img_id + 1;
+        if (img_id > 9){
+            img_id = 1;
+        }
+        activate_img('bo', img_id, 9);
+    }, 2500);
+  }
+    function copyToClipboard() {
+      const citationText = document.getElementById("citation").innerText;
+
+      // Create a temporary textarea element
+      const textarea = document.createElement("textarea");
+      textarea.value = citationText;
+      document.body.appendChild(textarea);
+
+      // Copy the text from the textarea to the clipboard
+      textarea.select();
+      document.execCommand("copy");
+
+      // Remove the temporary textarea
+      document.body.removeChild(textarea);
+
+      // Display a success message or perform any other desired action
+      // alert("Citation copied to clipboard!");
+    }
+    function toggleblock(blockId)
+    {
+        var block = document.getElementById(blockId);
+        if (block.style.display == 'none') {
+        block.style.display = 'block' ;
+        } else {
+        block.style.display = 'none' ;
+        }
+    }
+
+    $( document ).ready(function() {
+        $( ".blockId" ).click(function() {
+
+            $('.blockId').toggle();
+            $(this).toggleClass('open'); 
+        });
+
+    });
+</script>
+
+</head>
+
+<!-- <body> -->
+<body>
+    <div class="highlight-clean" style="padding-top: 15px;padding-bottom:10px;">
+        <div class="container" style="max-width: 768px;">
+            <h1 class="text-center"><b>Visual Instruction Inversion</b>:<br>
+            Image Editing via Visual Prompting
+        </h1>
+        </div>
+        <div class="container" style="max-width: 600px;">
+            <div class="row authors">
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="https://thaoshibe.github.io/">Thao Nguyen</a></h5>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a href="https://yuheng-li.github.io/">Yuheng Li</a></h5>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="https://utkarshojha.github.io/">Utkarsh Ojha</a></h5>
+                </div>
+                <div class="col-sm-3">
+                    <h5 class="text-center"><a class="text-center" href="https://pages.cs.wisc.edu/~yongjaelee/">Yong Jae Lee</a></h5>
+                    
+                </div>
+            </div>
+            <div><center><h6 class="text-center">University of Wisconsin - Madison</h6></center></div>
+        </div>
+        <div class="buttons" style="margin-bottom: 8px;">
+            <center>
+            <a class="btn btn-light" role="button" href="">
+                <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
+                </svg>Paper
+            </a>
+            <a class="btn btn-light" role="button" href="https://github.com/thaoshibe/visii">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                Code (Coming soon!)
+            </a>
+        </center>
+        </div>
+    </div>
+    <div class="container" style="max-width: 900px;">
+    <table class="demo1">
+    <tr>
+      <td style="width:100%;">
+        <table id ="bo_table" class="carousel_table">
+          <tr>
+            <td></td>
+            <td></td>
+            <td><b>Test Image</b></td>
+            <td></td>
+            <td><b>Edited Image</b></td>
+          </tr>
+          <tr>
+            <td><b>Before</b><br><img src="images/0_0.png" width="100"/></td>
+            <td><b>After</b><br><img src="assets/images/demo1/after.png" width="100"/></td>
+            <td><img src="images/1_0.png" width="256"/></td>
+            <td><center>&rightarrow;</center></td>
+            <td>
+                <div class="img-stack">
+                <img src="assets/images/demo1/husky.png" id="bo_2" width="256" />
+                <img src="assets/images/demo1/tiger.png" id="bo_3" width="256" />
+                <img src="assets/images/demo1/squirrel.png" id="bo_4" width="256" />
+                <img src="assets/images/demo1/polar_bear.png" id="bo_5" width="256" />
+                <img src="assets/images/demo1/rabbit.png" id="bo_6" width="256" />
+                <img src="assets/images/demo1/bluejay.png" id="bo_7" width="256" />
+
+                <img src="assets/images/demo1/badger.png" id="bo_8" width="256" />
+                <img src="assets/images/demo1/pitbull.png" id="bo_9" width="256" />
+                <img src="assets/images/demo1/ins.png" id="bo_1" width="256" activate="True"/>
+                <div class="overlay" id="bo_overlay"></div>
+                </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-family: fantasy;"><b><font color='blue'>Visual Prompt</font></b><br>(Before -> After direction)<br><font style="color:red">‹ins›</font></td>
+            <!-- <td></td> -->
+            <td colspan="3" class="prompt" style="text-align: left;"> <b><font color='green'>Editing instruction:</font></b>
+                <a href="#" id="bo_text_1" onclick="activate('bo', 1, 9);" class="active">[<font style="color:red">‹ins›</font> only]</a>
+                <a href="#" id="bo_text_2" onclick="activate('bo', 2, 9);">[‹ins› + "husky" 🐕]</a>
+                <a href="#" id="bo_text_3" onclick="activate('bo', 3, 9);">[<font style="color:red">‹ins›</font> + "tiger" 🐯]</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="bo_text_4" onclick="activate('bo', 4, 9);">[<font style="color:red">‹ins›</font> + "squirrel" 🐿️]</a>
+                <a href="#" id="bo_text_5" onclick="activate('bo', 5, 9);">[<font style="color:red">‹ins›</font> + "polar bear" 🐻‍❄️]</a>
+                <a href="#" id="bo_text_6" onclick="activate('bo', 6, 9);">[<font style="color:red">‹ins›</font> + "rabbit" 🐰]</a><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="bo_text_7" onclick="activate('bo', 7, 9);">[<font style="color:red">‹ins›</font> + "blue jay" 🐦]</a>
+                <a href="#" id="bo_text_8" onclick="activate('bo', 8, 9);">[<font style="color:red">‹ins›</font> + "badger" 🦡]</a>
+                <a href="#" id="bo_text_9" onclick="activate('bo', 9, 9);">[<font style="color:red">‹ins›</font> + "pit bull" 🐶]</a>
+            </td>
+          </tr>
+        </table>
+          </div>
+        </center>
+      </td>
+    </tr>
+    </table>
+    </div>
+        <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <h5></h5> -->
+                <p><b>TL;DR:</b>
+                    A framework for <font style='color:red'>inverting</font> <font style='color:blue'>visual prompts</font> into <font style="color:green">editing instructions</font> for text-to-image diffusion models.
+                </p>
+                <!-- <h5>ELI5:</h5> -->
+                <!-- p><b>ELI5:</b>
+                    You show the machine how to perform a task (by images), and then it replicates your actions. For example, it can learn your drawing style 🖍️ and use it to create a new drawing 🎨.
+                </p> -->
+            </div>
+        </div>
+    </div>
+
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Abstract</h2>
+                <p>
+                    <!-- <strong> -->
+                    Text-conditioned image editing has emerged as a powerful tool for editing images.
+                    However, in many situations, language can be ambiguous and ineffective in describing specific image edits.
+                    When faced with such challenges, visual prompts can be a more informative and intuitive way to convey ideas.</p>
+                <p>
+                    We present <b>a method for image editing via visual prompting</b>.
+                    Given pairs of example that represent the "before" and "after" images of an edit, our goal is to learn a text-based editing direction that can be used to perform the same edit on new images.
+                    We leverage the rich, pretrained editing capabilities of text-to-image diffusion models by inverting visual prompts into editing instructions.<br></p>
+                    <p>
+                    Our results show that with just one example pair, we can achieve competitive results compared to state-of-the-art text-conditioned image editing frameworks.
+                </p>
+            </div>
+            <hr style="width:70%;">
+            <center>
+                <video width="90%" controls autoplay>
+                  <source src="./assets/images/hybrid_instruction.mp4" type="video/mp4" >
+                </video>
+                </center>
+        </div>
+    </div>
+    <!-- <br> -->
+
+    <hr style="width:70%;">
+    <div class="container" style="max-width: 900px;">
+    <table style="width:100%;text-align: center;">
+        <tr>
+            <td colspan="3" style="width: 40%; background-color:#f5f5f5"> <b>Prior Work: Text-conditioned image editing </b></td>
+            <td colspan="4" style="width: 60%; background-color:#FFFFCC"> <b>📍 Ours: Visual Prompting Image Editing</b></td>
+        </tr>
+        <tr>
+            <td>Text Prompt</td>
+            <td>Test Image</td>
+            <td>Output</td>
+            <td><font color="blue">Visual Prompt:</font> Before &#8594; After </td>
+            <td>Test Image</td>
+            <td>Output</td>
+        </tr>
+        <tr>
+            <td style="width:12%;"><font style="font-family:fantasy;">"Make it a drawing"</font></td>
+            <td><img src="./assets/images/prior-vs-ours/mam_test.png" width="120px"></td>
+            <!-- <td style="width:12%;"><font style="font-family:fantasy;">"Make it a drawing"</font></td> -->
+            <td><img src="./assets/images/prior-vs-ours/mam_ip2p.png" width="120px"></td>
+            <td style="width: 35%"><img src="./assets/images/prior-vs-ours/mam_0.png" width="120px">&#8594;<img src="./assets/images/prior-vs-ours/mam_1.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/mam_test.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/mam_output.png" width="120px"></td>
+        </tr>
+        <tr>
+            <td style="width:12%;"><font style="font-family:fantasy;">"Turn it into an aerial photo"</font></td>
+            <td><img src="./assets/images/prior-vs-ours/map_test.png" width="120px"></td>
+            <!-- <td style="width:12%;"><font style="font-family:fantasy;">"Turn it into an aerial photo"</font></td> -->
+            <td><img src="./assets/images/prior-vs-ours/map_ip2p.png" width="120px"></td>
+            <td style="width: 35%"><img src="./assets/images/prior-vs-ours/map_0.png" width="120px">&#8594;<img src="./assets/images/prior-vs-ours/map_1.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/map_test.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/map_output.png" width="120px"></td>
+        </tr>
+        <!-- <tr>
+            <td style="width:12%;"><font style="font-family:fantasy;">"Make it 3D animated character"</font></td>
+            <td><img src="./assets/images/prior-vs-ours/starbucks_1_0.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/starbuck_ip2p.png" width="120px"></td>
+            <td style="width: 35%"><img src="./assets/images/prior-vs-ours/starbuck_0_0.png" width="120px">&#8594;<img src="./assets/images/prior-vs-ours/starbuck_0_1.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/starbucks_1_0.png" width="120px"></td>
+            <td><img src="./assets/images/prior-vs-ours/starbuck_ours.png" width="120px"></td>
+        </tr> -->
+
+        <tr style="text-align:left">
+            <td colspan='3'><i>Text-conditioned scheme (Prior work):<br>
+            Model takes an input image and a <b>text prompt</b> to perform the desired edit.</i></td>
+            <td colspan="3"><i>Visual prompting scheme (Ours):<br>
+            Given a pair of <b>before-after images</b> of an edit, our goal is to learn an implicit text-based editing instruction, and then apply it to new images.</i></td></tr>
+    </table>
+    </div>
+    <hr style="width:70%;">
+    <div class="container" style="max-width: 910px;">
+    <!-- Interesting case! -->
+    <b>💡 Use Case:</b> What if the desired edit is difficult to describe in words?<br>
+        E.g., describing how to transform the Starbucks logo into a "3D version". In this case, a <font style="color:red">visual prompt</font> is more efficient than a text prompt.<br>
+        <table style="font-family: fantasy;font-size: 75%;">
+          <tr>
+            <td><br><b>Before:</b><br><img src="./assets/images/prior-vs-ours/starbuck_0_0.png" alt="before" width='130'/></td>
+            <!-- <td>⇨<font style="color:red"> &#60;instruction&#62;🔥 </font>⇨</instruction> -->
+            <td><br><b>After:</b><br><img src="./assets/images/prior-vs-ours/starbuck_0_1.png" alt="after" width='130'/></td>
+            <td colspan=5 style="font-family: serif; font-size: 130%;text-align: center;">🧚 Inspired by <a href="https://www.reddit.com/r/StableDiffusion/comments/11avhpn/starbucks_logo_exploration_with_controlnet/">this reddit</a>, we tested <a href="https://github.com/thaoshibe/visii#starbucks-logo">Visii + InstructPix2Pix</a> with Starbucks and Gandour logos.</td>
+        </tr>
+        <tr>
+            <td><br><b>Test:</b><br><img src="./assets/images/prior-vs-ours/starbucks_1_0.png" alt="test" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "Wonder Woman"<br><img src="./assets/images/prior-vs-ours/starbucks_wonder_woman.png" alt="ours" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "Scarlet Witch"<br><img src="./assets/images/prior-vs-ours/starbucks_scarlet_witch.png" alt="ours" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "Daenerys Targaryen"<br><img src="./assets/images/prior-vs-ours/starbucks_dragon.png" alt="ours" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "Neytiri in Avatar"</font><br><img src="./assets/images/prior-vs-ours/starbucks_avatar.png" alt="ours" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "She-Hulk"<br><img src="./assets/images/prior-vs-ours/starbucks_shehulk.png" alt="ours" width='130'/></td>
+            <td><b><font style="color:red"> &#60;ins&#62; <br></font></b>+ "Maleficent"<br><img src="./assets/images/prior-vs-ours/starbucks_maleficent.png" alt="ours" width='130'/></td>
+
+          </tr>
+    </table>
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>How does it work?</h2>
+                <p>Given an example before-and-after image pair, we optimize the latent text instruction that converts the “before” image to the “after” image using a frozen image editing diffusion model, e.g., <a href="https://www.timothybrooks.com/instruct-pix2pix/">InstructPix2Pix</a>.</p>
+                <center><img src="./assets/images/framework.png" width="450px" alt="framework"></center>
+            </div>
+
+        </div>
+    </div>
+    
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Hybrid instruction</h2>
+                We only optimize a fixed number of tokens, so we have the flexibility to concatenate additional information to the learned instruction during inference. Users can input extra information to combine or guide the learned instruction according to their preferences.
+                <!-- This allows us to achieve more fine-grained control over the resulting images. -->
+<!-- Figure~\ref{fig:concat} shows qualitative results of this approach. -->
+            </div>
+        </div>
+    </div>
+    <hr style="width:70%;">
+    <div class="container" style="max-width: 900px;">
+    <table style="width:100%;text-align: center;">
+        </tr>
+            <td colspan="2"><img src="./assets/images/ins-concat.png" width="100%" alt="ins-concat"></td>
+        </tr>
+        <tr style="text-align:left">
+            <td width="35%"><i><b>Instruction Optimization</b>: We optimize instruction embedding <font style="color:red">‹ins›</font></i>.</td>
+            <td><i><b>Instruction Concatenation</b>: During test time, we can add extra information into the learned instruction <font style="color:red">‹ins›</font> to further guide the edit.</i></td>
+
+    </table>
+    </div>
+    <hr style="width:70%;">
+    <!-- More examples. -->
+    <!-- More examples on hybrid instructions. -->
+    <div class="container" style="max-width: 900px;">
+        <img src="./assets/images/concat.png" width="100%" alt="ins-concat-2">
+        <i>We can concatenate extra information into the learned instruction <font style="color:red">‹ins›</font> to navigate the edit. This allows us to achieve more fine-grained control over the resulting images.</i>
+    </div>
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Citation</h2>
+                <div id='citation' class="citation" style="font-family:monospace;font-size: 14px;">
+                @misc{VisualInstructionInversion,<br>
+                      &nbsp;&nbsp;&nbsp; title={Visual Instruction Inversion: Image Editing via Visual Prompting,<br>
+                      &nbsp;&nbsp;&nbsp; author={Thao Nguyen and Yuheng Li and Utkarsh Ojha and Yong Jae Lee},<br>
+                      &nbsp;&nbsp;&nbsp; year={2023},<br>
+                      &nbsp;&nbsp;&nbsp; archivePrefix={arXiv},<br>
+                      &nbsp;&nbsp;&nbsp; primaryClass={cs.CV}<br>
+                }
+            </div>
+              <button class="copy-button" onclick="copyToClipboard()">
+                <i style="font-size:24px;color: gray;" class="fa">&#xf0c5;</i>
+              </button>
+            </div>
+        </div>
+    </div>
+    <!-- Import the component -->
+    <hr class="divider" />
+    <div class="container" style="max-width: 768px; padding-bottom:30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <h2>Citation</h2> -->
+                This website template is adopted from <a href="https://dreamfusion3d.github.io/">DreamFusion</a> and <a href='https://imagic-editing.github.io/#'>Imagic</a>, source code can be found <a href="https://github.com/dreamfusion3d/dreamfusion3d.github.io">here</a> and <a href='https://github.com/imagic-editing/imagic-editing.github.io'>here</a>. Photo credit: <a href="https://www.instagram.com/avoshibe/">Bo the Shiba</a>. Thank you!
+                <a href="javascript:toggleblock('notice')" style="text-align:left;font-size:100%;color:#D3D3D3"> (.❛ ᴗ ❛.).</a>
+                  <div id="notice" style="display:none; color:#dedede; font-size:.5em;">
+                    <!-- <p> -->
+                      <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=tt&d=AEr40ow1CCzGJFakg0K7dO50kMYl14Fw5_t7_yaMmWs'></script>
+                    <!-- </p> -->
+                  </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
