@@ -1,6 +1,6 @@
 # VISII - Visual Instruction Inversion 👀
 
-### [arXiv]() | [BibTeX](#BibTeX) | [Project Page](https://thaoshibe.github.io/visii/)
+### [arXiv](https://arxiv.org/abs/2307.14331) | [BibTeX](#BibTeX) | [Project Page](https://thaoshibe.github.io/visii/)
 
 | ![./assets/images/teaser.png](./assets/images/teaser.png) |
 |:--:|
@@ -230,6 +230,7 @@ Photo credit: [Bo the Shiba & Mam the Cat 🐕🐈](https://www.instagram.com/av
       title={Visual Instruction Inversion: Image Editing via Visual Prompting,
       author={Thao Nguyen and Yuheng Li and Utkarsh Ojha and Yong Jae Lee},
       year={2023},
+      eprint={2307.14331},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
