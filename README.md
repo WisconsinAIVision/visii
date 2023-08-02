@@ -101,13 +101,13 @@ You can also concatenate new information to achieve new effects: **dog → water
   </tr>
 
 </table>
-<i>If you're not getting the quality that you want... You might tune the <b>guidance_scale</b></i>.
+<!-- <i>If you're not getting the quality that you want... You might tune the <b>guidance_scale</b></i>.
 <table>
   <tr>
     <td><img src="./assets/images/guidance_scale.png"></td>
   </tr>
   <tr><td><b>&#60;ins&#62; + "a poodle"</b>: From left to right: Increase the guidance scale (4, 6, 8, 10, 12, 14)</td></tr>
-</table>
+</table> -->
 
 > ⚠️ <i>If you're not getting the quality that you want... You might tune the <b>guidance_scale</b></i>.
 <table>
@@ -226,12 +226,10 @@ Photo credit: [Bo the Shiba & Mam the Cat 🐕🐈](https://www.instagram.com/av
 #### BibTeX
 
 ```
-@misc{VisualInstructionInversion,
-      title={Visual Instruction Inversion: Image Editing via Visual Prompting,
-      author={Thao Nguyen and Yuheng Li and Utkarsh Ojha and Yong Jae Lee},
-      year={2023},
-      eprint={2307.14331},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{nguyen2023visual,
+  title={Visual Instruction Inversion: Image Editing via Visual Prompting},
+  author={Nguyen, Thao and Li, Yuheng and Ojha, Utkarsh and Lee, Yong Jae},
+  journal={arXiv preprint arXiv:2307.14331},
+  year={2023}
 }
 ```
