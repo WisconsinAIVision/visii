@@ -6,7 +6,7 @@
 |:--:|
 | *Visii* learn instruction from before → after image, then apply to new images to perform same edit.|
 
-[👀 **Visual Instruction Inversion: Image Editing via Image Prompting**](https://thaoshibe.github.io/visii/)<br>
+[👀 **Visual Instruction Inversion: Image Editing via Image Prompting**](https://thaoshibe.github.io/visii/) (NeurIPS 2023)<br>
 [Thao Nguyen](https://thaoshibe.github.io/), [Yuheng Li](https://yuheng-li.github.io/), [Utkarsh Ojha](https://utkarshojha.github.io/), [Yong Jae Lee](https://pages.cs.wisc.edu/~yongjaelee/) <br>
 🦡 University of Wisconsin-Madison
 
