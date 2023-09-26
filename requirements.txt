@@ -1,0 +1,12 @@
+accelerate @ git+https://github.com/huggingface/accelerate.git@565152183334f709ac955204ef663023d1f63b7a
+bitsandbytes==0.38.1
+diffusers==0.17.1
+numpy==1.21.6
+opencv-python==4.7.0.72
+Pillow==9.5.0
+PyYAML==6.0
+torch==1.13.1
+torchvision==0.14.1
+tqdm==4.65.0
+transformers==4.28.1
+xformers==0.0.16

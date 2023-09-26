@@ -1,0 +1,27 @@
+model:
+    model_id: "timbrooks/instruct-pix2pix"
+
+data:
+    image_folder: "./images/"
+    subfolder: "painting1"
+
+    start: 0
+    end: 1
+
+exp:
+    init_expname: "ip2p"
+    prompt_type: "learn" # "learn" = init from caption of B;  "hard" = init from init_prompt (below)
+
+    init_prompt: "Turn it into a watercolor painting of a shiba inu" # for prompt_type = "hard"
+
+    num_img: 1
+    eval: True
+
+hyperparams:
+    embedding_learning_rate: 0.001
+    optimization_steps: 1000
+
+    clip_loss: True
+    lambda_clip: 0.1
+    lambda_mse: 4
+    eval_step: 100

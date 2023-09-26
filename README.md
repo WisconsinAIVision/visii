@@ -22,9 +22,9 @@
   <center>
 </div>
 
-<!-- 🔗 Jump to: [Requirements](#requirements) | [Quickstart](#quickstart) | [Visii + Ip2p](#visual-instruction-inversion) | [Visii + ControlNet](#visii-controlnet) | [BibTeX](#bibtex) | [🧚 Go Crazy 🧚](#starbucks-logo) -->
+🔗 Jump to: [Requirements](#requirements) | [Quickstart](#quickstart) | [Visii + Ip2p](#visual-instruction-inversion) | [Visii + ControlNet](#visii-controlnet) | [BibTeX](#bibtex) | [🧚 Go Crazy 🧚](#starbucks-logo)
 
-<!-- #### Requirements
+#### Requirements
 
 This script is tested on `NVIDIA RTX 3090`, Python 3.7 and PyTorch 1.13.0 and [diffusers](https://github.com/huggingface/diffusers). 
 
@@ -32,11 +32,11 @@ This script is tested on `NVIDIA RTX 3090`, Python 3.7 and PyTorch 1.13.0 and [d
 ```sh
 pip install -r requirements.txt
 ```
- -->
-<!-- #### Quickstart -->
+
+#### Quickstart
 
 Visual Instruction Inversion with [InstructPix2Pix](https://www.timothybrooks.com/instruct-pix2pix/).
-<!-- ```sh
+```sh
 # optimize <ins> (default checkpoint)
 python train.py --image_folder ./images --subfolder painting1
 # test <ins>
@@ -45,7 +45,7 @@ python test.py
 python test.py --hybrid_ins True --prompt "a husky" --guidance_scale 10
 ```
 
-Result image will be saved in `./result` folder. -->
+Result image will be saved in `./result` folder.
 
 <table>
   <tr>
@@ -101,13 +101,6 @@ You can also concatenate new information to achieve new effects: **dog → water
   </tr>
 
 </table>
-<!-- <i>If you're not getting the quality that you want... You might tune the <b>guidance_scale</b></i>.
-<table>
-  <tr>
-    <td><img src="./assets/images/guidance_scale.png"></td>
-  </tr>
-  <tr><td><b>&#60;ins&#62; + "a poodle"</b>: From left to right: Increase the guidance scale (4, 6, 8, 10, 12, 14)</td></tr>
-</table> -->
 
 > ⚠️ <i>If you're not getting the quality that you want... You might tune the <b>guidance_scale</b></i>.
 <table>
@@ -141,7 +134,7 @@ You can also concatenate new information to achieve new effects: **dog → water
   </tr>
 </table>
 
-<!-- *(If you're still not getting the quality that you want... You might tune the InstructPix2Pix parameters. See [Tips](https://github.com/timothybrooks/instruct-pix2pix#tips) or [Optimizing progress ⚠️](#optimizing-progress) for more details.)*
+*(If you're still not getting the quality that you want... You might tune the InstructPix2Pix parameters. See [Tips](https://github.com/timothybrooks/instruct-pix2pix#tips) or [Optimizing progress ⚠️](#optimizing-progress) for more details.)*
 
 #### Visual Instruction Inversion
 
@@ -180,25 +173,24 @@ We plugged Visii with [ControlNet 1.1 InstructPix2Pix](https://github.com/lllyas
 python train_controlnet.py --image_folder ./images --subfolder painting1
 # test <ins>
 python test_controlnet.py --log_folder controlnet_painting1_0_0.png
-``` -->
+```
 
 #### Optimizing Progress
 
-By default, we <!-- use the lowest MSE checkpoint (`./logs/{foldername}/best.pth`) as the final instruction.
+By default, we use the lowest MSE checkpoint (`./logs/{foldername}/best.pth`) as the final instruction.
 
 Sometimes, the `best.pth` checkpoint might not yield the best result.
 
-If you want to use a diff -->erent checkpoint, you can specify it using the `--checkpoint_number` argument.
+If you want to use a different checkpoint, you can specify it using the `--checkpoint_number` argument.
 
-A visualization of the optimization progress
- <!-- is saved in `./logs/{foldername}/eval_100.png` ⚠️. You can visually select the best checkpoint for testing. -->
+A visualization of the optimization progress is saved in `./logs/{foldername}/eval_100.png` ⚠️. You can visually select the best checkpoint for testing.
 
-<!-- ```sh
+```sh
 # test <ins> (with specified checkpoint)
 python test.py --log_folder ip2p_painting1_0_0.png --checkpoint_number 800
 # hybrid instruction: <ins> + "a squirrel" (with specified checkpoint)
 python test_concat.py --prompt "a husky" --checkpoint_number 800
-``` -->
+```
 
 <table>
   <tr>
