@@ -218,10 +218,12 @@ Photo credit: [Bo the Shiba & Mam the Cat 🐕🐈](https://www.instagram.com/av
 #### BibTeX
 
 ```
-@article{nguyen2023visual,
-  title={Visual Instruction Inversion: Image Editing via Visual Prompting},
-  author={Nguyen, Thao and Li, Yuheng and Ojha, Utkarsh and Lee, Yong Jae},
-  journal={arXiv preprint arXiv:2307.14331},
-  year={2023}
+@inproceedings{
+nguyen2023visual,
+title={Visual Instruction Inversion: Image Editing via Image Prompting},
+author={Thao Nguyen and Yuheng Li and Utkarsh Ojha and Yong Jae Lee},
+booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+year={2023},
+url={https://openreview.net/forum?id=l9BsCh8ikK}
 }
 ```
